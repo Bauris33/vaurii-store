@@ -9,7 +9,22 @@ body.view-home #catalog {display:none !important;}
 body:not(.view-home) #catalog {padding-top:32px;}
 
 .product-buttons{display:flex;gap:9px;align-items:stretch}.product-buttons .buy{flex:1;min-width:0}.mini-cart{flex:0 0 49px;border:1px solid #ddd4f5;border-radius:13px;background:#f2edff;color:#5931a8;font-size:21px;font-weight:800}.mini-cart:hover{background:#e8ddff}.detail-pay{margin:14px 0}.detail-pay .payment-options{margin-top:10px}.detail-pay .payment-account{margin-top:10px}.detail-confirm{width:100%;padding:15px 18px}.actions .detail-confirm{width:100%}
-</style></head><body>
+</style><!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1128602439956521');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1128602439956521&amp;ev=PageView&amp;noscript=1" alt=""></noscript>
+<!-- End Meta Pixel Code -->
+</head><body>
 <div class="top">✨ عالم المنتجات الرقمية في مكان واحد — Vauri</div>
 <header class="header"><div class="container nav"><a class="brand" href="#home"><span class="logo"></span><span>Vauri</span></a><nav class="navlinks"><a href="#home">الرئيسية</a><a href="#catalog">المنتجات</a><a href="#about">من نحن</a></nav><button class="cartbtn" onclick="openCart()">🛍️ طلباتي <span class="count" id="cartcount">0</span></button></div></header>
 <main id="home"><section class="hero"><div class="container heroinner"><div><span class="eyebrow">✦ VAURI DIGITAL STORE</span><h1>كل ما تحتاجه من <span>المنتجات الرقمية</span> في مكان واحد.</h1><p>تصفح الاشتراكات والبطاقات الرقمية، اختر الباقة المناسبة لك، وأرسل طلبك بسهولة عبر WhatsApp.</p><a class="herobtn" href="#catalog">تصفح المنتجات ←</a></div><div class="heroart"><div class="orb"></div><span class="logo"></span></div></div></section>
@@ -31,7 +46,8 @@ let detailCartMode=false;let detailPayment='';
 function openDetail(id,cartMode=false){current=PRODUCTS.find(p=>p.id===id);selected=0;detailCartMode=cartMode;detailPayment='';drawDetail();$('#overlay').classList.add('open');document.body.style.overflow='hidden'}
 function drawDetail(){let p=current,o=p.options[selected];$('#detail').innerHTML=`<div class="detailphoto">${photo(p)}</div><div><span class="category">${p.category}</span><h2>${p.name}</h2><p class="muted">${p.quality||'منتج رقمي'} • اختر ${p.id==='itunes'?'قيمة البطاقة':'المدة'} المناسبة لك.</p><div class="muted">اختر ${p.id==='itunes'?'قيمة البطاقة':'مدة الاشتراك'}:</div><div class="opts">${p.options.map((a,i)=>`<button class="opt ${i===selected?'selected':''}" onclick="selectOption(${i})">${a.label}<br><strong>${money(a.price)}</strong></button>`).join('')}</div><div class="muted">السعر النهائي</div><div class="detailprice">${money(o.price)}</div>${detailCartMode?'':`<div class="payment-choice detail-pay"><strong>💳 اختر وسيلة الدفع</strong><div class="payment-options">${['بنكيلي','سداد','مصرفي'].map(m=>`<label class="payment-option"><input type="radio" name="detail_payment" value="${m}" ${detailPayment===m?'checked':''} onchange="chooseDetailPayment(this.value)"> ${m}</label>`).join('')}</div><div class="payment-account" ${detailPayment?'':'hidden'}><div>رقم حساب التحويل</div><span class="account-number" dir="ltr">49342434</span><button type="button" onclick="copyPaymentAccount()">📋 نسخ الرقم</button><div class="payment-note">يرجى انتظار تأكيد الطلب قبل تحويل المبلغ.</div></div></div>`}<div class="actions"><button class="primary detail-confirm" onclick="${detailCartMode?'addCart()':'confirmDirectOrder()'}">${detailCartMode?'＋ إضافة للسلة':'✅ تأكيد الطلب عبر واتساب'}</button></div><p class="muted">التسليم من فوري إلى 15 دقيقة بعد تأكيد الدفع.</p></div>`}
 function chooseDetailPayment(value){detailPayment=value;drawDetail()}
-function confirmDirectOrder(){if(!detailPayment){toast('يرجى اختيار وسيلة الدفع أولًا');return}const p=current,o=p.options[selected];const lines=['مرحبًا، أود شراء الاشتراك التالي:','',`📺 *المنصة:* ${p.name}`,`📅 *${p.id==='itunes'?'قيمة البطاقة':'مدة الاشتراك'}:* ${o.label}`,`💰 *المبلغ الإجمالي:* ${money(o.price)}`,'',`💳 *وسيلة الدفع:* ${detailPayment}`,`🏦 *رقم حساب التحويل:* ${paymentAccountNumber}`,'⚡ *التسليم:* فوري إلى 15 دقيقة بعد تأكيد الدفع','','✅ أرغب في تأكيد الطلب وإتمام الدفع.'];const url='https://wa.me/22249342434?text='+encodeURIComponent(lines.join('\n'));window.location.href=url}
+function trackVauriCheckout(){if(typeof window.fbq==='function'){window.fbq('track','InitiateCheckout');}}
+function confirmDirectOrder(){if(!detailPayment){toast('يرجى اختيار وسيلة الدفع أولًا');return}const p=current,o=p.options[selected];const lines=['مرحبًا، أود شراء الاشتراك التالي:','',`📺 *المنصة:* ${p.name}`,`📅 *${p.id==='itunes'?'قيمة البطاقة':'مدة الاشتراك'}:* ${o.label}`,`💰 *المبلغ الإجمالي:* ${money(o.price)}`,'',`💳 *وسيلة الدفع:* ${detailPayment}`,`🏦 *رقم حساب التحويل:* ${paymentAccountNumber}`,'⚡ *التسليم:* فوري إلى 15 دقيقة بعد تأكيد الدفع','','✅ أرغب في تأكيد الطلب وإتمام الدفع.'];const url='https://wa.me/22249342434?text='+encodeURIComponent(lines.join('\n'));trackVauriCheckout();window.location.href=url}
 
 function selectOption(i){selected=i;drawDetail()}
 function closeDetail(){ $('#overlay').classList.remove('open');document.body.style.overflow=''}
@@ -61,7 +77,7 @@ function sendOrder(){
  }
  lines.push('',`💳 *وسيلة الدفع:* ${payment.value}`,`🏦 *رقم حساب التحويل:* ${paymentAccountNumber}`,'⚡ *التسليم:* فوري إلى 15 دقيقة بعد تأكيد الدفع','','✅ أرغب في تأكيد الطلب وإتمام الدفع.');
  const msg=lines.join('\n'),number='22249342434';
- if(number){window.open('https://wa.me/'+number+'?text='+encodeURIComponent(msg),'_blank','noopener');}
+ if(number){trackVauriCheckout();window.open('https://wa.me/'+number+'?text='+encodeURIComponent(msg),'_blank','noopener');}
  else{navigator.clipboard?.writeText(msg).then(()=>toast('تم نسخ الطلب')).catch(()=>prompt('انسخ نص الطلب:',msg));$('#setup').classList.add('open');}
 }
 function saveNumber(){let n=$('#phone').value.replace(/[^0-9]/g,'');if(n.length<8){toast('أدخل الرقم مع رمز الدولة دون +');return}localStorage.setItem('vauri_whatsapp',n);$('#setup').classList.remove('open');toast('تم حفظ رقم WhatsApp على هذا المتصفح')}
